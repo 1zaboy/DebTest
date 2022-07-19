@@ -1,0 +1,15 @@
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\bin\Debug\net6.0\DebTest.exe
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\bin\Debug\net6.0\DebTest.deps.json
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\bin\Debug\net6.0\DebTest.runtimeconfig.json
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\bin\Debug\net6.0\DebTest.dll
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\bin\Debug\net6.0\ref\DebTest.dll
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\bin\Debug\net6.0\DebTest.pdb
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\obj\Debug\net6.0\DebTest.csproj.AssemblyReference.cache
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\obj\Debug\net6.0\DebTest.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\obj\Debug\net6.0\DebTest.AssemblyInfoInputs.cache
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\obj\Debug\net6.0\DebTest.AssemblyInfo.cs
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\obj\Debug\net6.0\DebTest.csproj.CoreCompileInputs.cache
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\obj\Debug\net6.0\DebTest.dll
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\obj\Debug\net6.0\ref\DebTest.dll
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\obj\Debug\net6.0\DebTest.pdb
+C:\Users\Vlad Kolosov\RiderProjects\DebTest\DebTest\obj\Debug\net6.0\DebTest.genruntimeconfig.cache
