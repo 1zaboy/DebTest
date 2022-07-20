@@ -45,8 +45,6 @@ namespace Packaging.Targets
         [Required]
         public string Description { get; set; }
 
-        public string RuntimeIdentifier { get; set; }
-
         public string DebPackageArchitecture { get; set; }
 
         public string AppHost { get; set; }
@@ -147,7 +145,7 @@ namespace Packaging.Targets
                         Description,
                         Maintainer,
                         Version,
-                        !string.IsNullOrWhiteSpace(DebPackageArchitecture) ? DebPackageArchitecture : GetPackageArchitecture(RuntimeIdentifier),
+                        DebPackageArchitecture,
                         dependencies,
                         recommends,
                         null);

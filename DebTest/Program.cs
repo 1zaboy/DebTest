@@ -38,7 +38,8 @@ static class Program
             "/home/vlad",
             $"{path}",
             $"{fileOutput}",
-            ""
+            "opt/local/sdp/sdp_service/config",
+            "app_config.ini"
         );
         var lines = File.ReadAllLines(pathIni);
         for (var i = 0; i < lines.Length; i++)
@@ -60,22 +61,23 @@ static class Program
 
         Console.WriteLine("Deb building...");
 
+        var customName = "sdp-gateway";
+
         var debTask = new DebTask()
         {
-            DebPath = Path.Combine("", ""),
-            DebTarPath = "",
-            PublishDir = "C:/Users/Vlad Kolosov/Downloads",
-            AppHost = "",
+            DebPath = Path.Combine("/home/vlad", $"{path}", customName),
+            DebTarPath = Path.Combine("/home/vlad", $"{path}", customName + ".tar"),
+            PublishDir = Path.Combine("/home/vlad", $"{path}", fileOutput),
+            AppHost = null,
             Prefix = "",
             Content = Array.Empty<ITaskItem>(),
             LinuxFolders = Array.Empty<ITaskItem>(),
-            DebTarXzPath = "",
-            PackageName = "",
+            DebTarXzPath = Path.Combine("/home/vlad", $"{path}", customName + ".tar.xz"),
+            PackageName = "sdp-gateway.deb",
             Description = "",
             Maintainer = "",
             Version = "1.0.0",
-            DebPackageArchitecture = "",
-            RuntimeIdentifier = "",
+            DebPackageArchitecture = "amd64",
         };
 
         debTask.Execute();
