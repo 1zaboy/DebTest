@@ -23,7 +23,12 @@ static class Program
 
         using (FileStream s = File.Open(Path.Combine("/home/vlad/", path, file), FileMode.Open, FileAccess.ReadWrite, FileShare.None))
         {
-            var data = DebPackageReader.Read(s);
+            var data = DebPackageReader.GetPayloadStream(s);
+            using (var folder = File.Create(""))
+            {
+                data.Seek(0, SeekOrigin.Begin);
+                data.CopyTo(folder);
+            }
         }
 
 
