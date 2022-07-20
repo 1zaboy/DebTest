@@ -49,12 +49,6 @@ namespace Packaging.Targets
 
         public string DebPackageArchitecture { get; set; }
 
-        public string Section { get; set; }
-
-        public string Homepage { get; set; }
-
-        public string Priority { get; set; }
-
         public string AppHost { get; set; }
 
         public ITaskItem[] LinuxFolders { get; set; }
@@ -65,16 +59,6 @@ namespace Packaging.Targets
 
         public ITaskItem[] DebRecommends { get; set; }
 
-        public bool CreateUser { get; set; }
-
-        public string UserName { get; set; }
-
-        public bool InstallService { get; set; }
-        public string ServiceName { get; set; }
-        public string PreInstallScript { get; set; }
-        public string PostInstallScript { get; set; }
-        public string PreRemoveScript { get; set; }
-        public string PostRemoveScript { get; set; }
         public static string GetPackageArchitecture(string runtimeIdentifier)
         {
             RuntimeIdentifiers.ParseRuntimeId(runtimeIdentifier, out _, out _, out Architecture? architecture, out _);
@@ -164,18 +148,6 @@ namespace Packaging.Targets
                         Maintainer,
                         Version,
                         !string.IsNullOrWhiteSpace(DebPackageArchitecture) ? DebPackageArchitecture : GetPackageArchitecture(RuntimeIdentifier),
-                        CreateUser,
-                        UserName,
-                        InstallService,
-                        ServiceName,
-                        Prefix,
-                        Section,
-                        Priority,
-                        Homepage,
-                        PreInstallScript,
-                        PostInstallScript,
-                        PreRemoveScript,
-                        PostRemoveScript,
                         dependencies,
                         recommends,
                         null);

@@ -20,18 +20,6 @@ namespace Packaging.Targets.Deb
             string maintainer,
             string version,
             string arch,
-            bool createUser,
-            string userName,
-            bool installService,
-            string serviceName,
-            string prefix,
-            string section,
-            string priority,
-            string homepage,
-            string preInstallScript,
-            string postInstallScript,
-            string preRemoveScript,
-            string postRemoveScript,
             IEnumerable<string> additionalDependencies,
             IEnumerable<string> recommends,
             Action<DebPackage> additionalMetadata)
@@ -54,77 +42,9 @@ namespace Packaging.Targets.Deb
                 }
             };
 
-            if (!string.IsNullOrEmpty(section))
-            {
-                pkg.ControlFile["Section"] = section;
-            }
-
-            if (!string.IsNullOrEmpty(priority))
-            {
-                pkg.ControlFile["Priority"] = priority;
-            }
-
-            if (!string.IsNullOrEmpty(homepage))
-            {
-                pkg.ControlFile["Homepage"] = homepage;
-            }
-
-            if (createUser)
-            {
-                pkg.PreInstallScript += $"/usr/sbin/groupadd -r {userName} 2>/dev/null || :\n" +
-                    $"/usr/sbin/useradd -g {userName} -s /sbin/nologin -r {userName} 2>/dev/null || :\n";
-            }
-
-            if (installService)
-            {
-                pkg.PostInstallScript += $"systemctl daemon-reload\n";
-                pkg.PostInstallScript += $"systemctl enable --now {serviceName}.service\n";
-                pkg.PreRemoveScript += $"systemctl --no-reload disable --now {serviceName}.service\n";
-            }
-
             foreach (var entryToRemove in archiveEntries.Where(e => e.RemoveOnUninstall))
             {
                 pkg.PostRemoveScript += $"/bin/rm -rf {entryToRemove.TargetPath}\n";
-            }
-
-            if (!string.IsNullOrEmpty(preInstallScript))
-            {
-                pkg.PreInstallScript += preInstallScript;
-
-                if (!preInstallScript.EndsWith("\n"))
-                {
-                    pkg.PreInstallScript += "\n";
-                }
-            }
-
-            if (!string.IsNullOrEmpty(postInstallScript))
-            {
-                pkg.PostInstallScript += postInstallScript;
-
-                if (!postInstallScript.EndsWith("\n"))
-                {
-                    pkg.PostInstallScript += "\n";
-                }
-            }
-
-            if (!string.IsNullOrEmpty(preRemoveScript))
-            {
-                pkg.PreRemoveScript += preRemoveScript;
-
-                if (!preRemoveScript.EndsWith("\n"))
-                {
-                    pkg.PreRemoveScript += "\n";
-                }
-            }
-
-            if (!string.IsNullOrEmpty(postRemoveScript))
-            {
-                pkg.PostRemoveScript += postRemoveScript;
-
-                if (!postRemoveScript.EndsWith("\n"))
-                {
-                    pkg.PostRemoveScript += "\n";
-                }
             }
 
             if (additionalDependencies != null && additionalDependencies.Any())

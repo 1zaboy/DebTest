@@ -76,17 +76,6 @@ static class Program
             Version = "1.0.0",
             DebPackageArchitecture = "",
             RuntimeIdentifier = "",
-            CreateUser = false,
-            UserName = "Aaaa",
-            InstallService = false,
-            ServiceName = "Aaaa",
-            Section = "",
-            Priority = "",
-            Homepage = "",
-            PreInstallScript = "",
-            PostInstallScript = "",
-            PreRemoveScript = "",
-            PostRemoveScript = "",
         };
 
         debTask.Execute();
