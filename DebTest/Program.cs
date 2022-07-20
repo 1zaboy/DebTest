@@ -1,5 +1,6 @@
 ﻿using Microsoft.Build.Framework;
 using Packaging.Targets;
+using Packaging.Targets.Deb;
 using System.Diagnostics;
 
 static class Program
@@ -18,6 +19,13 @@ static class Program
         Console.WriteLine("Path: " + path);
         Console.WriteLine("File: " + file);
         Console.WriteLine("File output: " + fileOutput);
+
+
+        using (FileStream s = File.Open(Path.Combine("/home/vlad/", path, file), FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+        {
+            var data = DebPackageReader.Read(s);
+        }
+
 
         var process = new ProcessStartInfo
         {
