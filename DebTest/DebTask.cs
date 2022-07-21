@@ -19,19 +19,13 @@ namespace Packaging.Targets
         public string DebPackageArchitecture { get; set; }
         public string AppHost { get; set; }
         public ITaskItem[] LinuxFolders { get; set; }
-        public ITaskItem[] DebDotNetDependencies { get; set; }
-        public ITaskItem[] DebDependencies { get; set; }
-        public ITaskItem[] DebRecommends { get; set; }
 
         public bool Execute()
         {
             using (var targetStream = File.Open(DebPath, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
             using (var tarStream = File.Open(DebTarPath, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
             {
-                ArchiveBuilder archiveBuilder = new ArchiveBuilder()
-                {
-                    //
-                };
+                ArchiveBuilder archiveBuilder = new ArchiveBuilder();
 
                 var archiveEntries = archiveBuilder.FromDirectory(
                     PublishDir,
@@ -49,29 +43,6 @@ namespace Packaging.Targets
                 TarFileCreator.FromArchiveEntries(archiveEntries, tarStream);
                 tarStream.Position = 0;
 
-                List<string> dependencies = new List<string>();
-
-                if (DebDependencies != null)
-                {
-                    var debDependencies = DebDependencies.Select(d => d.ItemSpec).ToArray();
-
-                    dependencies.AddRange(debDependencies);
-                }
-
-                if (DebDotNetDependencies != null)
-                {
-                    var debDotNetDependencies = DebDotNetDependencies.Select(d => d.ItemSpec).ToArray();
-
-                    dependencies.AddRange(debDotNetDependencies);
-                }
-
-                List<string> recommends = new List<string>();
-
-                if (DebRecommends != null)
-                {
-                    recommends.AddRange(DebRecommends.Select(d => d.ItemSpec));
-                }
-
                 using (var tarXzStream = File.Open(DebTarXzPath, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
                 using (var xzStream = new XZOutputStream(tarXzStream))
                 {
@@ -87,8 +58,6 @@ namespace Packaging.Targets
                         Maintainer,
                         Version,
                         DebPackageArchitecture,
-                        dependencies,
-                        recommends,
                         null);
 
                     DebPackageCreator.WriteDebPackage(
