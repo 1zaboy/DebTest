@@ -25,20 +25,11 @@
                 {
                     return TargetPath + "/";
                 }
-                else
-                {
-                    return TargetPath;
-                }
+                return TargetPath;
             }
         }
 
-        public string TargetPathWithoutFinalSlash
-        {
-            get
-            {
-                return TargetPath?.TrimEnd('/');
-            }
-        }
+        public string TargetPathWithoutFinalSlash => TargetPath?.TrimEnd('/');
 
         public override string ToString()
         {

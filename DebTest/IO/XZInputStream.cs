@@ -22,16 +22,16 @@ namespace Packaging.Targets.IO
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            this.innerStream = stream;
+            innerStream = stream;
 
-            var ret = NativeMethods.lzma_stream_decoder(ref this.lzmaStream, ulong.MaxValue, LzmaDecodeFlags.Concatenated);
+            var ret = NativeMethods.lzma_stream_decoder(ref lzmaStream, ulong.MaxValue, LzmaDecodeFlags.Concatenated);
 
-            this.inbuf = Marshal.AllocHGlobal(BufSize);
-            this.outbuf = Marshal.AllocHGlobal(BufSize);
+            inbuf = Marshal.AllocHGlobal(BufSize);
+            outbuf = Marshal.AllocHGlobal(BufSize);
 
-            this.lzmaStream.AvailIn = 0;
-            this.lzmaStream.NextOut = this.outbuf;
-            this.lzmaStream.AvailOut = BufSize;
+            lzmaStream.AvailIn = 0;
+            lzmaStream.NextOut = outbuf;
+            lzmaStream.AvailOut = BufSize;
 
             if (ret == LzmaResult.OK)
             {
@@ -55,7 +55,7 @@ namespace Packaging.Targets.IO
         {
             get
             {
-                this.EnsureNotDisposed();
+                EnsureNotDisposed();
                 return true;
             }
         }
@@ -64,7 +64,7 @@ namespace Packaging.Targets.IO
         {
             get
             {
-                this.EnsureNotDisposed();
+                EnsureNotDisposed();
                 return false;
             }
         }
@@ -73,7 +73,7 @@ namespace Packaging.Targets.IO
         {
             get
             {
-                this.EnsureNotDisposed();
+                EnsureNotDisposed();
                 return false;
             }
         }
@@ -82,24 +82,24 @@ namespace Packaging.Targets.IO
         {
             get
             {
-                this.EnsureNotDisposed();
+                EnsureNotDisposed();
 
                 const int streamFooterSize = 12;
 
-                if (this.length == 0)
+                if (length == 0)
                 {
                     var lzmaStreamFlags = default(LzmaStreamFlags);
                     var streamFooter = new byte[streamFooterSize];
 
-                    this.innerStream.Seek(-streamFooterSize, SeekOrigin.End);
-                    this.innerStream.Read(streamFooter, 0, streamFooterSize);
+                    innerStream.Seek(-streamFooterSize, SeekOrigin.End);
+                    innerStream.Read(streamFooter, 0, streamFooterSize);
 
                     NativeMethods.lzma_stream_footer_decode(ref lzmaStreamFlags, streamFooter);
                     var indexPointer = new byte[lzmaStreamFlags.BackwardSize];
 
-                    this.innerStream.Seek(-streamFooterSize - (long)lzmaStreamFlags.BackwardSize, SeekOrigin.End);
-                    this.innerStream.Read(indexPointer, 0, (int)lzmaStreamFlags.BackwardSize);
-                    this.innerStream.Seek(0, SeekOrigin.Begin);
+                    innerStream.Seek(-streamFooterSize - (long)lzmaStreamFlags.BackwardSize, SeekOrigin.End);
+                    innerStream.Read(indexPointer, 0, (int)lzmaStreamFlags.BackwardSize);
+                    innerStream.Seek(0, SeekOrigin.Begin);
 
                     var index = IntPtr.Zero;
                     var memLimit = ulong.MaxValue;
@@ -116,12 +116,12 @@ namespace Packaging.Targets.IO
                     var uSize = NativeMethods.lzma_index_uncompressed_size(index);
 
                     NativeMethods.lzma_index_end(index, IntPtr.Zero);
-                    this.length = (long)uSize;
-                    return this.length;
+                    length = (long)uSize;
+                    return length;
                 }
                 else
                 {
-                    return this.length;
+                    return length;
                 }
             }
         }
@@ -130,27 +130,27 @@ namespace Packaging.Targets.IO
         {
             get
             {
-                this.EnsureNotDisposed();
-                return this.position;
+                EnsureNotDisposed();
+                return position;
             }
 
             set
             {
-                this.EnsureNotDisposed();
+                EnsureNotDisposed();
                 throw new NotSupportedException("XZ Stream does not support setting position");
             }
         }
 
         public override void Flush()
         {
-            this.EnsureNotDisposed();
+            EnsureNotDisposed();
 
             throw new NotSupportedException("XZ Stream does not support flush");
         }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            this.EnsureNotDisposed();
+            EnsureNotDisposed();
 
             throw new NotSupportedException("XZ Stream does not support seek");
         }
@@ -162,40 +162,40 @@ namespace Packaging.Targets.IO
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            this.EnsureNotDisposed();
+            EnsureNotDisposed();
 
             var action = LzmaAction.Run;
 
             var readBuf = new byte[BufSize];
             var outManagedBuf = new byte[BufSize];
 
-            while (this.internalBuffer.Count < count)
+            while (internalBuffer.Count < count)
             {
-                if (this.lzmaStream.AvailIn == 0)
+                if (lzmaStream.AvailIn == 0)
                 {
-                    this.lzmaStream.AvailIn = (uint)this.innerStream.Read(readBuf, 0, readBuf.Length);
-                    Marshal.Copy(readBuf, 0, this.inbuf, (int)this.lzmaStream.AvailIn);
-                    this.lzmaStream.NextIn = this.inbuf;
+                    lzmaStream.AvailIn = (uint)innerStream.Read(readBuf, 0, readBuf.Length);
+                    Marshal.Copy(readBuf, 0, inbuf, (int)lzmaStream.AvailIn);
+                    lzmaStream.NextIn = inbuf;
 
-                    if (this.lzmaStream.AvailIn == 0)
+                    if (lzmaStream.AvailIn == 0)
                     {
                         action = LzmaAction.Finish;
                     }
                 }
 
-                var ret = NativeMethods.lzma_code(ref this.lzmaStream, action);
+                var ret = NativeMethods.lzma_code(ref lzmaStream, action);
 
-                if (this.lzmaStream.AvailOut == 0 || ret == LzmaResult.StreamEnd)
+                if (lzmaStream.AvailOut == 0 || ret == LzmaResult.StreamEnd)
                 {
-                    var writeSize = BufSize - (int)this.lzmaStream.AvailOut;
-                    Marshal.Copy(this.outbuf, outManagedBuf, 0, writeSize);
+                    var writeSize = BufSize - (int)lzmaStream.AvailOut;
+                    Marshal.Copy(outbuf, outManagedBuf, 0, writeSize);
 
-                    this.internalBuffer.AddRange(outManagedBuf);
+                    internalBuffer.AddRange(outManagedBuf);
                     var tail = outManagedBuf.Length - writeSize;
-                    this.internalBuffer.RemoveRange(this.internalBuffer.Count - tail, tail);
+                    internalBuffer.RemoveRange(internalBuffer.Count - tail, tail);
 
-                    this.lzmaStream.NextOut = this.outbuf;
-                    this.lzmaStream.AvailOut = BufSize;
+                    lzmaStream.NextOut = outbuf;
+                    lzmaStream.AvailOut = BufSize;
                 }
 
                 if (ret != LzmaResult.OK)
@@ -205,7 +205,7 @@ namespace Packaging.Targets.IO
                         break;
                     }
 
-                    NativeMethods.lzma_end(ref this.lzmaStream);
+                    NativeMethods.lzma_end(ref lzmaStream);
 
                     switch (ret)
                     {
@@ -230,19 +230,19 @@ namespace Packaging.Targets.IO
                 }
             }
 
-            if (this.internalBuffer.Count >= count)
+            if (internalBuffer.Count >= count)
             {
-                this.internalBuffer.CopyTo(0, buffer, offset, count);
-                this.internalBuffer.RemoveRange(0, count);
-                this.position += count;
+                internalBuffer.CopyTo(0, buffer, offset, count);
+                internalBuffer.RemoveRange(0, count);
+                position += count;
                 return count;
             }
             else
             {
-                var intBufLength = this.internalBuffer.Count;
-                this.internalBuffer.CopyTo(0, buffer, offset, intBufLength);
-                this.internalBuffer.Clear();
-                this.position += intBufLength;
+                var intBufLength = internalBuffer.Count;
+                internalBuffer.CopyTo(0, buffer, offset, intBufLength);
+                internalBuffer.Clear();
+                position += intBufLength;
                 return intBufLength;
             }
         }
@@ -254,24 +254,24 @@ namespace Packaging.Targets.IO
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (disposed)
             {
                 return;
             }
 
-            NativeMethods.lzma_end(ref this.lzmaStream);
+            NativeMethods.lzma_end(ref lzmaStream);
 
-            Marshal.FreeHGlobal(this.inbuf);
-            Marshal.FreeHGlobal(this.outbuf);
+            Marshal.FreeHGlobal(inbuf);
+            Marshal.FreeHGlobal(outbuf);
 
             base.Dispose(disposing);
 
-            this.disposed = true;
+            disposed = true;
         }
 
         private void EnsureNotDisposed()
         {
-            if (this.disposed)
+            if (disposed)
             {
                 throw new ObjectDisposedException(nameof(XZInputStream));
             }

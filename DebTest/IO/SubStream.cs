@@ -24,44 +24,17 @@
             }
         }
 
-        public override bool CanRead
-        {
-            get
-            {
-                return stream.CanRead;
-            }
-        }
+        public override bool CanRead => stream.CanRead;
 
-        public override bool CanSeek
-        {
-            get
-            {
-                return stream.CanSeek;
-            }
-        }
+        public override bool CanSeek => stream.CanSeek;
 
-        public override bool CanWrite
-        {
-            get
-            {
-                return !readOnly && stream.CanWrite;
-            }
-        }
+        public override bool CanWrite => !readOnly && stream.CanWrite;
 
-        public override long Length
-        {
-            get
-            {
-                return subStreamLength;
-            }
-        }
+        public override long Length => subStreamLength;
 
         public override long Position
         {
-            get
-            {
-                return position;
-            }
+            get => position;
 
             set
             {
@@ -73,21 +46,9 @@
             }
         }
 
-        internal Stream Stream
-        {
-            get
-            {
-                return stream;
-            }
-        }
+        internal Stream Stream => stream;
 
-        internal long Offset
-        {
-            get
-            {
-                return subStreamOffset;
-            }
-        }
+        internal long Offset => subStreamOffset;
 
         public override void Flush()
         {
@@ -198,12 +159,6 @@
             }
 
             subStreamLength = value;
-        }
-
-        public void UpdateWindow(long offset, long length)
-        {
-            subStreamOffset = offset;
-            subStreamLength = length;
         }
 
         protected override void Dispose(bool disposing)

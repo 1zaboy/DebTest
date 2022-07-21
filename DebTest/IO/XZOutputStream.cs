@@ -82,7 +82,6 @@ namespace Packaging.Targets.IO
 
         public static bool SupportsMultiThreading => NativeMethods.SupportsMultiThreading;
 
-        /// <inheritdoc/>
         public override bool CanRead
         {
             get
@@ -92,7 +91,6 @@ namespace Packaging.Targets.IO
             }
         }
 
-        /// <inheritdoc/>
         public override bool CanSeek
         {
             get
@@ -102,7 +100,6 @@ namespace Packaging.Targets.IO
             }
         }
 
-        /// <inheritdoc/>
         public override bool CanWrite
         {
             get
@@ -112,7 +109,6 @@ namespace Packaging.Targets.IO
             }
         }
 
-        /// <inheritdoc/>
         public override long Length
         {
             get
@@ -122,7 +118,6 @@ namespace Packaging.Targets.IO
             }
         }
 
-        /// <inheritdoc/>
         public override long Position
         {
             get
@@ -138,9 +133,6 @@ namespace Packaging.Targets.IO
             }
         }
 
-        /// <summary>
-        /// Single-call buffer encoding
-        /// </summary>
         public static byte[] Encode(byte[] buffer, uint preset = DefaultPreset)
         {
             var res = new byte[(long)NativeMethods.lzma_stream_buffer_bound((UIntPtr)buffer.Length)];
@@ -160,34 +152,29 @@ namespace Packaging.Targets.IO
             return res;
         }
 
-        /// <inheritdoc/>
         public override void Flush()
         {
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc/>
         public override long Seek(long offset, SeekOrigin origin)
         {
             EnsureNotDisposed();
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc/>
         public override void SetLength(long value)
         {
             EnsureNotDisposed();
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc/>
         public override int Read(byte[] buffer, int offset, int count)
         {
             EnsureNotDisposed();
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc/>
         public override void Write(byte[] buffer, int offset, int count)
         {
             EnsureNotDisposed();
@@ -234,7 +221,6 @@ namespace Packaging.Targets.IO
             while (lzmaStream.AvailIn != 0);
         }
 
-        /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
             // finish encoding only if all input has been successfully processed
@@ -288,9 +274,6 @@ namespace Packaging.Targets.IO
             }
         }
 
-        /// <summary>
-        /// Throws an exception if this stream is disposed of.
-        /// </summary>
         private void EnsureNotDisposed()
         {
             if (disposed)

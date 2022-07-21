@@ -1,78 +1,27 @@
-﻿using System.Runtime.InteropServices;
-using Microsoft.Build.Framework;
+﻿using Microsoft.Build.Framework;
 using Packaging.Targets.Deb;
 using Packaging.Targets.IO;
 
 namespace Packaging.Targets
 {
-    public class DebTask // : Microsoft.Build.Utilities.Task
+    public class DebTask
     {
-        [Required]
         public string PublishDir { get; set; }
-
-        [Required]
         public string DebPath { get; set; }
-
-        [Required]
         public string DebTarPath { get; set; }
-
-        [Required]
         public string DebTarXzPath { get; set; }
-
-        [Required]
         public string Prefix { get; set; }
-
-        [Required]
         public string Version { get; set; }
-
-        [Required]
         public string PackageName { get; set; }
-
-        [Required]
         public ITaskItem[] Content { get; set; }
-
-        [Required]
         public string Maintainer { get; set; }
-
-        [Required]
         public string Description { get; set; }
-
         public string DebPackageArchitecture { get; set; }
-
         public string AppHost { get; set; }
-
         public ITaskItem[] LinuxFolders { get; set; }
-
         public ITaskItem[] DebDotNetDependencies { get; set; }
-
         public ITaskItem[] DebDependencies { get; set; }
-
         public ITaskItem[] DebRecommends { get; set; }
-
-        public static string GetPackageArchitecture(string runtimeIdentifier)
-        {
-            RuntimeIdentifiers.ParseRuntimeId(runtimeIdentifier, out _, out _, out Architecture? architecture, out _);
-
-            if (architecture != null)
-            {
-                switch (architecture.Value)
-                {
-                    case Architecture.Arm:
-                        return "armhf";
-
-                    case Architecture.Arm64:
-                        return "arm64";
-
-                    case Architecture.X64:
-                        return "amd64";
-
-                    case Architecture.X86:
-                        return "i386";
-                }
-            }
-
-            return "all";
-        }
 
         public bool Execute()
         {

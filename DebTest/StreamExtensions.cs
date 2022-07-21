@@ -77,27 +77,6 @@ namespace Packaging.Targets
             return bytes.Length;
         }
 
-        public static void WriteBE(this Stream stream, short value)
-        {
-            var data = BitConverter.GetBytes(value);
-            Array.Reverse(data);
-            stream.Write(data, 0, data.Length);
-        }
-
-        public static void WriteBE(this Stream stream, int value)
-        {
-            var data = BitConverter.GetBytes(value);
-            Array.Reverse(data);
-            stream.Write(data, 0, data.Length);
-        }
-
-        public static void WriteBE(this Stream stream, long value)
-        {
-            var data = BitConverter.GetBytes(value);
-            Array.Reverse(data);
-            stream.Write(data, 0, data.Length);
-        }
-
         private static void RespectEndianness<T>(byte[] data)
         {
             foreach (var field in typeof(T).GetTypeInfo().DeclaredFields)

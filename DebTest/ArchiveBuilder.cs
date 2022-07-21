@@ -69,7 +69,7 @@ namespace Packaging.Targets
                     var path = folder.ItemSpec.Replace("\\", "/");
 
                     LinuxFileMode mode = LinuxFileMode.S_IXOTH | LinuxFileMode.S_IROTH | LinuxFileMode.S_IXGRP | LinuxFileMode.S_IRGRP | LinuxFileMode.S_IXUSR | LinuxFileMode.S_IWUSR | LinuxFileMode.S_IRUSR | LinuxFileMode.S_IFDIR;
-                    mode = this.GetFileMode(path, folder, mode);
+                    mode = GetFileMode(path, folder, mode);
 
                     ArchiveEntry directoryEntry = new ArchiveEntry()
                     {
@@ -79,7 +79,7 @@ namespace Packaging.Targets
                         Modified = DateTime.Now,
                         Group = folder.GetGroup(),
                         Owner = folder.GetOwner(),
-                        Inode = this.inode++,
+                        Inode = inode++,
                         TargetPath = path,
                         LinkTo = string.Empty,
                         RemoveOnUninstall = folder.GetRemoveOnUninstall()

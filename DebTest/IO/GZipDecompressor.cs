@@ -13,14 +13,14 @@ namespace Packaging.Targets.IO
 
         public override long Position
         {
-            get { return this.position; }
+            get { return position; }
             set { throw new NotSupportedException(); }
         }
 
         public override int Read(byte[] array, int offset, int count)
         {
             var read = base.Read(array, offset, count);
-            this.position += read;
+            position += read;
             return read;
         }
     }

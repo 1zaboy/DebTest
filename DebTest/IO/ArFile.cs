@@ -14,40 +14,40 @@ namespace Packaging.Targets.IO
 
         public override bool Read()
         {
-            this.EnsureMagicRead();
+            EnsureMagicRead();
 
-            if (this.EntryStream != null)
+            if (EntryStream != null)
             {
-                this.EntryStream.Dispose();
+                EntryStream.Dispose();
             }
 
-            this.Align(2);
+            Align(2);
 
-            if (this.Stream.Position == this.Stream.Length)
+            if (Stream.Position == Stream.Length)
             {
                 return false;
             }
 
-            this.entryHeader = this.Stream.ReadStruct<ArHeader>();
-            this.FileHeader = this.entryHeader;
-            this.FileName = this.entryHeader.FileName;
+            entryHeader = Stream.ReadStruct<ArHeader>();
+            FileHeader = entryHeader;
+            FileName = entryHeader.FileName;
 
-            if (this.entryHeader.EndChar != "`\n")
+            if (entryHeader.EndChar != "`\n")
             {
                 throw new InvalidDataException("The magic for the file entry is invalid");
             }
 
-            this.EntryStream = new SubStream(this.Stream, this.Stream.Position, this.entryHeader.FileSize, leaveParentOpen: true);
+            EntryStream = new SubStream(Stream, Stream.Position, entryHeader.FileSize, leaveParentOpen: true);
 
             return true;
         }
 
         protected void EnsureMagicRead()
         {
-            if (!this.magicRead)
+            if (!magicRead)
             {
                 byte[] buffer = new byte[Magic.Length];
-                this.Stream.Read(buffer, 0, buffer.Length);
+                Stream.Read(buffer, 0, buffer.Length);
                 var magic = Encoding.ASCII.GetString(buffer);
 
                 if (!string.Equals(magic, Magic, StringComparison.Ordinal))
@@ -55,7 +55,7 @@ namespace Packaging.Targets.IO
                     throw new InvalidDataException("The .ar file did not start with the expected magic");
                 }
 
-                this.magicRead = true;
+                magicRead = true;
             }
         }
     }
