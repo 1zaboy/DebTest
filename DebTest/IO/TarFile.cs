@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace Packaging.Targets.IO
+﻿namespace Packaging.Targets.IO
 {
     public class TarFile : ArchiveFile
     {

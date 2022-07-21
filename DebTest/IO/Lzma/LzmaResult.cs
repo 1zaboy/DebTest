@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Packaging.Targets.IO
+﻿namespace Packaging.Targets.IO
 {
     internal enum LzmaResult : uint
     {

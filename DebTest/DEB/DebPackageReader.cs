@@ -1,11 +1,6 @@
 ﻿using Packaging.Targets.IO;
 using SharpCompress.Common;
 using SharpCompress.Readers;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
 
 namespace Packaging.Targets.Deb
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Packaging.Targets.IO
+﻿namespace Packaging.Targets.IO
 {
     internal enum TarTypeFlag : byte
     {

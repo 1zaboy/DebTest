@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Packaging.Targets.Deb
+﻿namespace Packaging.Targets.Deb
 {
     internal class DebPackage
     {

@@ -1,7 +1,4 @@
 ﻿using Microsoft.Build.Framework;
-using System;
-using System.IO;
-using System.Linq;
 
 namespace Packaging.Targets
 {
