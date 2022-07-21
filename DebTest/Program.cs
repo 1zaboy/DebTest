@@ -1,7 +1,6 @@
 ﻿using Microsoft.Build.Framework;
 using Packaging.Targets;
 using Packaging.Targets.Deb;
-using System.Diagnostics;
 
 static class Program
 {
@@ -11,6 +10,9 @@ static class Program
         { "client_secret", "" },
         { "controller_url", "" },
     };
+
+    private static string m_HomePath = "/home/vlad";
+    private static string m_IniPath = "etc/opt/sdp/app_config.ini";
 
     public static void Main(string[] args)
     {
@@ -23,36 +25,51 @@ static class Program
         Console.WriteLine("File output: " + fileOutput);
 
 
-        using (FileStream s = File.Open(Path.Combine("/home/vlad/", path, file), FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+        using (FileStream s = File.Open(Path.Combine(m_HomePath, path, file), FileMode.Open, FileAccess.ReadWrite, FileShare.None))
         {
             var data = DebPackageReader.GetPayloadStream(s);
-            DebPackageReader.unTAR(data, Path.Combine("/home/vlad/", path, fileOutput));
+            DebPackageReader.unTAR(data, Path.Combine(m_HomePath, path, fileOutput));
         }
-
-
-        var process = new ProcessStartInfo
-        {
-            WorkingDirectory = "/home/vlad/",
-            FileName = "dpkg-deb",
-            Arguments = $"-x {path}/{file} {path}/{fileOutput}",
-        };
-
-        var cmd = Process.Start(process);
-        cmd.WaitForExit();
 
         Console.WriteLine();
         Console.WriteLine("Unpacked");
 
         // ----------------------------------------------------
 
-        var pathIni = Path.Combine(
-            "/home/vlad",
-            $"{path}",
-            $"{fileOutput}",
-            "etc/opt/sdp",
-            "app_config.ini"
-        );
+        EditIni(Path.Combine(m_HomePath, path, fileOutput, m_IniPath));
+
+        // ----------------------------------------------------
+
+        Console.WriteLine("Deb building...");
+
+        var customName = "sdp-gateway";
+
+        var debTask = new DebTask()
+        {
+            DebPath = Path.Combine(m_HomePath, $"{path}", customName + ".deb"),
+            DebTarPath = Path.Combine(m_HomePath, $"{path}", customName + ".tar"),
+            PublishDir = Path.Combine(m_HomePath, $"{path}", fileOutput),
+            AppHost = null,
+            Prefix = "",
+            Content = Array.Empty<ITaskItem>(),
+            LinuxFolders = Array.Empty<ITaskItem>(),
+            DebTarXzPath = Path.Combine(m_HomePath, $"{path}", customName + ".tar.xz"),
+            PackageName = $"{customName}.deb",
+            Description = "",
+            Maintainer = "",
+            Version = "1.0.0",
+            DebPackageArchitecture = "amd64",
+        };
+
+        debTask.Execute();
+
+        Console.WriteLine("End");
+    }
+
+    private static void EditIni(string pathIni)
+    {
         var lines = File.ReadAllLines(pathIni);
+        
         for (var i = 0; i < lines.Length; i++)
         {
             var v = lines[i].Split(':');
@@ -66,33 +83,6 @@ static class Program
             }
         }
 
-        File.WriteAllLines(pathIni, lines);
-
-        // ----------------------------------------------------
-
-        Console.WriteLine("Deb building...");
-
-        var customName = "sdp-gateway";
-
-        var debTask = new DebTask()
-        {
-            DebPath = Path.Combine("/home/vlad", $"{path}", customName),
-            DebTarPath = Path.Combine("/home/vlad", $"{path}", customName + ".tar"),
-            PublishDir = Path.Combine("/home/vlad", $"{path}", fileOutput),
-            AppHost = null,
-            Prefix = "",
-            Content = Array.Empty<ITaskItem>(),
-            LinuxFolders = Array.Empty<ITaskItem>(),
-            DebTarXzPath = Path.Combine("/home/vlad", $"{path}", customName + ".tar.xz"),
-            PackageName = "sdp-gateway.deb",
-            Description = "",
-            Maintainer = "",
-            Version = "1.0.0",
-            DebPackageArchitecture = "amd64",
-        };
-
-        debTask.Execute();
-
-        Console.WriteLine("End");
+        File.WriteAllLines(pathIni, lines); 
     }
 }
