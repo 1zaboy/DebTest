@@ -7,7 +7,9 @@ static class Program
 {
     private static readonly Dictionary<string, string> m_Properties = new()
     {
-        { "gateway_id", "175" }
+        { "gateway_id", "175" },
+        { "client_secret", "" },
+        { "controller_url", "" },
     };
 
     public static void Main(string[] args)
@@ -24,11 +26,7 @@ static class Program
         using (FileStream s = File.Open(Path.Combine("/home/vlad/", path, file), FileMode.Open, FileAccess.ReadWrite, FileShare.None))
         {
             var data = DebPackageReader.GetPayloadStream(s);
-            using (var folder = File.Create(""))
-            {
-                data.Seek(0, SeekOrigin.Begin);
-                data.CopyTo(folder);
-            }
+            DebPackageReader.unTAR(data, Path.Combine("/home/vlad/", path, fileOutput));
         }
 
 
@@ -51,7 +49,7 @@ static class Program
             "/home/vlad",
             $"{path}",
             $"{fileOutput}",
-            "opt/local/sdp/sdp_service/config",
+            "etc/opt/sdp",
             "app_config.ini"
         );
         var lines = File.ReadAllLines(pathIni);

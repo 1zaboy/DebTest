@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "gkwSJtmjAeO91bg4iQ2XlwmuVcdJJDUTjhuNuA852edJEWA7RUpPwQO0HnatEDwnUL8RQ5y5KBtHADR8JmtTNA==",
+  "dgSpecHash": "ELcFWwzfQ/hfIJ8Uz0CNow/Q8itkyTlvqw4d433zFfzsDo3wxbKzQBmQ7ysAUVtarigA/QTmZ1xIbLkqFOBvVQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Vlad Kolosov\\RiderProjects\\DebTest\\DebTest\\DebTest.csproj",
   "expectedPackageFiles": [
@@ -12,6 +12,7 @@
     "C:\\Users\\Vlad Kolosov\\.nuget\\packages\\microsoft.win32.registry\\4.3.0\\microsoft.win32.registry.4.3.0.nupkg.sha512",
     "C:\\Users\\Vlad Kolosov\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\Vlad Kolosov\\.nuget\\packages\\packaging.targets\\0.1.220\\packaging.targets.0.1.220.nupkg.sha512",
+    "C:\\Users\\Vlad Kolosov\\.nuget\\packages\\sharpcompress\\0.32.1\\sharpcompress.0.32.1.nupkg.sha512",
     "C:\\Users\\Vlad Kolosov\\.nuget\\packages\\sharpziplib\\1.3.3\\sharpziplib.1.3.3.nupkg.sha512",
     "C:\\Users\\Vlad Kolosov\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\Vlad Kolosov\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",

@@ -121,6 +121,15 @@
           }
         }
       },
+      "SharpCompress/0.32.1": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/SharpCompress.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/SharpCompress.dll": {}
+        }
+      },
       "SharpZipLib/1.3.3": {
         "type": "package",
         "compile": {
@@ -607,6 +616,22 @@
         "tools/netstandard2.0/BouncyCastle.Crypto.dll",
         "tools/netstandard2.0/ICSharpCode.SharpZipLib.dll",
         "tools/netstandard2.0/Packaging.Targets.dll"
+      ]
+    },
+    "SharpCompress/0.32.1": {
+      "sha512": "9Cwj3lK/p7wkiBaQPCvaKINuHYuZ0ACDldA4M3o5ISSq7cjbbq3yqigTDBUoKjtyyXpqmQHUkw6fhLnjNF30ow==",
+      "type": "package",
+      "path": "sharpcompress/0.32.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/SharpCompress.dll",
+        "lib/net6.0/SharpCompress.dll",
+        "lib/netcoreapp3.1/SharpCompress.dll",
+        "lib/netstandard2.0/SharpCompress.dll",
+        "lib/netstandard2.1/SharpCompress.dll",
+        "sharpcompress.0.32.1.nupkg.sha512",
+        "sharpcompress.nuspec"
       ]
     },
     "SharpZipLib/1.3.3": {
@@ -1855,6 +1880,7 @@
       "Microsoft.Build.Framework >= 17.2.0",
       "Microsoft.Build.Utilities.Core >= 17.2.0",
       "Packaging.Targets >= 0.1.220-*",
+      "SharpCompress >= 0.32.1",
       "SharpZipLib >= 1.3.3"
     ]
   },
@@ -1915,6 +1941,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[0.1.220-*, )"
+          },
+          "SharpCompress": {
+            "target": "Package",
+            "version": "[0.32.1, )"
           },
           "SharpZipLib": {
             "target": "Package",

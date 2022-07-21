@@ -1,4 +1,6 @@
 ﻿using Packaging.Targets.IO;
+using SharpCompress.Common;
+using SharpCompress.Readers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,6 +30,24 @@ namespace Packaging.Targets.Deb
             }
 
             return package;
+        }
+        
+        internal static void unTAR(Stream streamTar, string directoryPath)
+        {
+            var reader = ReaderFactory.Open(streamTar);
+            while (reader.MoveToNextEntry())
+            {
+                if (!reader.Entry.IsDirectory)
+                {
+                    ExtractionOptions opt = new ExtractionOptions
+                    {
+                        ExtractFullPath = true,
+                        Overwrite = true
+                    };
+                    Directory.CreateDirectory(directoryPath);
+                    reader.WriteEntryToDirectory(directoryPath, opt);
+                }
+            }
         }
 
         internal static Stream GetPayloadStream(Stream stream)
