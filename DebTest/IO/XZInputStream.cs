@@ -119,10 +119,7 @@ namespace Packaging.Targets.IO
                     length = (long)uSize;
                     return length;
                 }
-                else
-                {
-                    return length;
-                }
+                return length;
             }
         }
 
@@ -237,14 +234,12 @@ namespace Packaging.Targets.IO
                 position += count;
                 return count;
             }
-            else
-            {
-                var intBufLength = internalBuffer.Count;
-                internalBuffer.CopyTo(0, buffer, offset, intBufLength);
-                internalBuffer.Clear();
-                position += intBufLength;
-                return intBufLength;
-            }
+            
+            var intBufLength = internalBuffer.Count;
+            internalBuffer.CopyTo(0, buffer, offset, intBufLength);
+            internalBuffer.Clear();
+            position += intBufLength;
+            return intBufLength;
         }
 
         public override void Write(byte[] buffer, int offset, int count)

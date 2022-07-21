@@ -10,11 +10,6 @@ namespace Packaging.Targets
     {
         private uint inode = 0;
 
-        public ArchiveBuilder()
-        {
-            //
-        }
-
         public List<ArchiveEntry> FromDirectory(string directory, string appHost, string prefix, ITaskItem[] metadata)
         {
             List<ArchiveEntry> value = new List<ArchiveEntry>();
@@ -218,14 +213,6 @@ namespace Packaging.Targets
                 try
                 {
                     mode = (LinuxFileMode)Convert.ToUInt32(overridenFileMode, 8);
-
-                    LinuxFileMode fileType = mode & LinuxFileMode.FileTypeMask;
-
-                    if (fileType != LinuxFileMode.None && fileType != defaultFileTypeMask)
-                    {
-                        //
-                    }
-
                     mode = (mode & ~LinuxFileMode.FileTypeMask) | defaultFileTypeMask;
                 }
                 catch (Exception)

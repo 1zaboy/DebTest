@@ -8,11 +8,7 @@
         {
         }
 
-        public string LinkName
-        {
-            get;
-            private set;
-        }
+        public string LinkName { get; private set; }
 
         public override bool Read()
         {
@@ -26,14 +22,10 @@
             LinkName = entryHeader.LinkName;
 
             if (string.IsNullOrEmpty(entryHeader.Magic))
-            {
                 return false;
-            }
 
             if (entryHeader.Magic != "ustar")
-            {
                 throw new InvalidDataException("The magic for the file entry is invalid");
-            }
 
             Align(512);
 
@@ -48,17 +40,14 @@
 
                 return read;
             }
-            else if (entryHeader.TypeFlag == TarTypeFlag.LongLink)
+            if (entryHeader.TypeFlag == TarTypeFlag.LongLink)
             {
                 var longLinkName = this.ReadAsUtf8String();
                 var read = Read();
                 LinkName = longLinkName;
                 return read;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
     }
 }

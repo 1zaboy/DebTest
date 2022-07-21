@@ -9,10 +9,7 @@ namespace Packaging.Targets.IO
             using (TarFile cpioFile = new TarFile(targetStream, leaveOpen: true))
             {
                 foreach (var entry in archiveEntries)
-                {
                     WriteEntry(targetStream, entry);
-                }
-
                 WriteTrailer(targetStream);
             }
         }
@@ -20,9 +17,7 @@ namespace Packaging.Targets.IO
         public static void WriteTrailer(Stream stream)
         {
             if (stream.CanSeek)
-            {
                 Align(stream);
-            }
 
             var trailer = new byte[1024];
             stream.Write(trailer, 0, trailer.Length);
@@ -41,9 +36,7 @@ namespace Packaging.Targets.IO
         {
             var targetPath = entry.TargetPath;
             if (!targetPath.StartsWith("."))
-            {
                 targetPath = "." + targetPath;
-            }
 
             if (targetPath.Length > 99)
             {
@@ -62,9 +55,7 @@ namespace Packaging.Targets.IO
                 };
 
                 using (MemoryStream nameStream = new MemoryStream(entryName))
-                {
                     WriteEntry(stream, nameEntry, nameStream);
-                }
 
                 targetPath = targetPath.Substring(0, 99);
             }
@@ -131,24 +122,17 @@ namespace Packaging.Targets.IO
             finally
             {
                 if (dispose)
-                {
                     data.Dispose();
-                }
             }
         }
 
-        private static void Align(Stream stream)
-        {
-            Align(stream, stream.Position);
-        }
+        private static void Align(Stream stream) => Align(stream, stream.Position);
 
         private static void Align(Stream stream, long position)
         {
             var spos = position % 512;
             if (spos == 0)
-            {
                 return;
-            }
 
             var align = new byte[512 - spos];
             stream.Write(align, 0, align.Length);
